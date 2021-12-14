@@ -13,6 +13,7 @@ import logging
 import re
 import signal as signals
 import threading
+from pathlib import Path
 from asyncio.queues import QueueEmpty
 from functools import partial
 from hashlib import sha1
@@ -358,7 +359,7 @@ class MqttIo:  # pylint: disable=too-many-instance-attributes
             in_conf = self.digital_input_configs[event.input_name]
             is_counter = in_conf.get("is_counter")
             value = event.to_value != in_conf["inverted"]
-            _LOG.info("New value -> using counter? : %s", is_counter)
+            
             if is_counter is true:
                 incr = in_conf["increment_per_pulse"] if value else 0
                 val = in_conf["old_value"] + incr
@@ -403,7 +404,6 @@ class MqttIo:  # pylint: disable=too-many-instance-attributes
 
             # Setup counter related stuff
             is_counter = in_conf.get("is_counter")
-            _LOG.info("Initialize -> using counter? : %s", is_counter)
             if is_counter : 
                 my_file = Path(in_conf.get("file_path"))
                 if my_file.is_file():
