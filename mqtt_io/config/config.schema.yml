@@ -670,6 +670,43 @@ digital_inputs:
             required: no
             empty: no
             default: binary_sensor
+      increment_per_impulse:
+        meta:
+          description: Increment the counter by this amount for each TRUE-pulse.
+        type: float
+        required: no
+        default: 1.0
+      is_counter:
+        meta:
+          description: Whether this digital_input should work as a pulse counter.
+        type: boolean
+        required: no
+        default: false
+      old_value:
+        meta:
+          description: Initial/old value for the counter.
+        type: float
+        required: no
+        default: 0.0
+      num_pulses_since_transmission:
+        meta:
+          description: Internal counter since last tranmission
+        type: integer
+        required: no
+        default: 0
+      min_pulses_between_transmission:
+        meta:
+          description: Number of pulses before transmitting the value of the counter
+        type: integer
+        required: no
+        default: 1
+      file_path:
+        meta:
+          description: File path containing the latest value of the counter
+        type: string
+        required: no
+        default: "/counter_value.txt"
+        
 
 digital_outputs:
   meta:

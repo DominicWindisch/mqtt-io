@@ -356,26 +356,41 @@ class MqttIo:  # pylint: disable=too-many-instance-attributes
         # Needs to be a function, not a method, hence the closure function.
         async def publish_callback(event: DigitalInputChangedEvent) -> None:
             in_conf = self.digital_input_configs[event.input_name]
+            is_counter = in_conf.get("is_counter")
             value = event.to_value != in_conf["inverted"]
-            val = in_conf["on_payload"] if value else in_conf["off_payload"]
-            self.mqtt_task_queue.put_nowait(
-                PriorityCoro(
-                    self._mqtt_publish(
-                        MQTTMessageSend(
-                            "/".join(
-                                (
-                                    self.config["mqtt"]["topic_prefix"],
-                                    INPUT_TOPIC,
-                                    event.input_name,
-                                )
-                            ),
-                            val.encode("utf8"),
-                            retain=in_conf["retain"],
-                        )
-                    ),
-                    MQTT_PUB_PRIORITY,
+            
+            if is_counter is true:
+                incr = in_conf["increment_per_pulse"] if value else 0
+                val = in_conf["old_value"] + incr
+                in_conf["old_value"] = val
+                in_conf["num_pulses_since_transmission"]+=1
+                if in_conf["num_pulses_since_transmission"] >= in_conf["min_pulses_between_transmission"]:
+                    in_conf["num_pulses_since_transmission"] = 0
+                f = open(in_conf("file_path"),"w")
+                f.write(str(val))
+                f.close()
+            else:
+                val = in_conf["on_payload"] if value else in_conf["off_payload"]
+
+            if in_conf["num_pulses_since_transmission"] == 0 :
+                self.mqtt_task_queue.put_nowait(
+                    PriorityCoro(
+                        self._mqtt_publish(
+                            MQTTMessageSend(
+                                "/".join(
+                                    (
+                                        self.config["mqtt"]["topic_prefix"],
+                                        INPUT_TOPIC,
+                                        event.input_name,
+                                    )
+                                ),
+                                val.encode("utf8"),
+                                retain=in_conf["retain"],
+                            )
+                        ),
+                        MQTT_PUB_PRIORITY,
+                    )
                 )
-            )
 
         self.event_bus.subscribe(DigitalInputChangedEvent, publish_callback)
 
@@ -385,6 +400,15 @@ class MqttIo:  # pylint: disable=too-many-instance-attributes
             self.digital_input_configs[in_conf["name"]] = in_conf
 
             gpio_module.setup_pin_internal(PinDirection.INPUT, in_conf)
+
+            # Setup counter related stuff
+            is_counter = in_conf.get("is_counter")
+            if is_counter : 
+                my_file = Path(in_conf.get("file_path"))
+                if my_file.is_file():
+                    f = open(in_conf.get("file_path"), 'r') # 'r' = read
+                    in_conf["old_value"] = float(f.read())
+                    f.close()
 
             interrupt = in_conf.get("interrupt")
             interrupt_for = in_conf.get("interrupt_for")
