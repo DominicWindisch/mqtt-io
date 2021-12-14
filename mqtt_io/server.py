@@ -372,6 +372,7 @@ class MqttIo:  # pylint: disable=too-many-instance-attributes
                 f = open(fname,"w")
                 f.write(str(val))
                 f.close()
+                val = str(val)
             else:
                 val = in_conf["on_payload"] if value else in_conf["off_payload"]
 
@@ -387,7 +388,7 @@ class MqttIo:  # pylint: disable=too-many-instance-attributes
                                         event.input_name,
                                     )
                                 ),
-                                str(val), #val.encode("utf8"),
+                                val.encode("utf8"),
                                 retain=in_conf["retain"],
                             )
                         ),
