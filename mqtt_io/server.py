@@ -360,7 +360,7 @@ class MqttIo:  # pylint: disable=too-many-instance-attributes
             is_counter = in_conf.get("is_counter")
             value = event.to_value != in_conf["inverted"]
             
-            if is_counter is true:
+            if is_counter:
                 incr = in_conf["increment_per_pulse"] if value else 0
                 val = in_conf["old_value"] + incr
                 in_conf["old_value"] = val
@@ -404,7 +404,7 @@ class MqttIo:  # pylint: disable=too-many-instance-attributes
 
             # Setup counter related stuff
             is_counter = in_conf.get("is_counter")
-            if is_counter : 
+            if is_counter: 
                 my_file = Path(in_conf.get("file_path"))
                 if my_file.is_file():
                     f = open(in_conf.get("file_path"), 'r') # 'r' = read
