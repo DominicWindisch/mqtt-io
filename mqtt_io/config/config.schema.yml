@@ -452,7 +452,7 @@ stream_modules:
         required: no
         default: yes
 
-digital_inputs_broken:
+digital_inputs:
   meta:
     description: List of digital inputs to configure.
     extra_info: |
