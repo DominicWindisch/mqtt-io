@@ -362,7 +362,9 @@ class MqttIo:  # pylint: disable=too-many-instance-attributes
             
             if is_counter:
                 incr = in_conf["increment_per_impulse"] if value else 0
-                val = in_conf["old_value"] + incr
+                val = in_conf["old_value"]
+                # round for precise increments
+                val = round(100000 * (val + incr))/100000
                 fname = in_conf["file_path"]
                 in_conf["old_value"] = val
                 in_conf["num_pulses_since_transmission"]+=1
