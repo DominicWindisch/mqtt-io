@@ -363,11 +363,13 @@ class MqttIo:  # pylint: disable=too-many-instance-attributes
             if is_counter:
                 incr = in_conf["increment_per_impulse"] if value else 0
                 val = in_conf["old_value"] + incr
+                fname = in_conf["file_path"]
                 in_conf["old_value"] = val
                 in_conf["num_pulses_since_transmission"]+=1
                 if in_conf["num_pulses_since_transmission"] >= in_conf["min_pulses_between_transmission"]:
                     in_conf["num_pulses_since_transmission"] = 0
-                f = open(in_conf("file_path"),"w")
+                _LOG.info("Open storage file: %s", fname)
+                f = open(fname,"w")
                 f.write(str(val))
                 f.close()
             else:
