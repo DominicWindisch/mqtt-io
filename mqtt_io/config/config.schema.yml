@@ -643,33 +643,6 @@ digital_inputs:
         type: boolean
         required: no
         default: yes
-      ha_discovery:
-        meta:
-          description: |
-            Configures the
-            [Home Assistant MQTT discovery](https://www.home-assistant.io/docs/mqtt/discovery/)
-            for this pin.
-
-            Any values entered into this section will be sent as part of the discovery
-            config payload. See the above link for documentation.
-          yaml_example: |
-            digital_inputs:
-              - name: livingroom_motion
-                module: rpi
-                ha_discovery:
-                  component: binary_sensor
-                  name: Living Room Motion
-                  device_class: motion
-        type: dict
-        allow_unknown: yes
-        schema:
-          component:
-            meta:
-              description: Type of component to report this input as to Home Assistant.
-            type: string
-            required: no
-            empty: no
-            default: binary_sensor
       increment_per_impulse:
         meta:
           description: Increment the counter by this amount for each TRUE-pulse.
@@ -706,7 +679,33 @@ digital_inputs:
         type: string
         required: no
         default: "/counter_value.txt"
-        
+      ha_discovery:
+        meta:
+          description: |
+            Configures the
+            [Home Assistant MQTT discovery](https://www.home-assistant.io/docs/mqtt/discovery/)
+            for this pin.
+
+            Any values entered into this section will be sent as part of the discovery
+            config payload. See the above link for documentation.
+          yaml_example: |
+            digital_inputs:
+              - name: livingroom_motion
+                module: rpi
+                ha_discovery:
+                  component: binary_sensor
+                  name: Living Room Motion
+                  device_class: motion
+        type: dict
+        allow_unknown: yes
+        schema:
+          component:
+            meta:
+              description: Type of component to report this input as to Home Assistant.
+            type: string
+            required: no
+            empty: no
+            default: binary_sensor
 
 digital_outputs:
   meta:
