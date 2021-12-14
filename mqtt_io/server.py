@@ -387,7 +387,7 @@ class MqttIo:  # pylint: disable=too-many-instance-attributes
                                         event.input_name,
                                     )
                                 ),
-                                val.encode("utf8"),
+                                str(val), #val.encode("utf8"),
                                 retain=in_conf["retain"],
                             )
                         ),
@@ -412,6 +412,7 @@ class MqttIo:  # pylint: disable=too-many-instance-attributes
                     f = open(in_conf.get("file_path"), 'r') # 'r' = read
                     in_conf["old_value"] = float(f.read())
                     f.close()
+            in_conf["num_pulses_since_transmission"] = 0
 
             interrupt = in_conf.get("interrupt")
             interrupt_for = in_conf.get("interrupt_for")
