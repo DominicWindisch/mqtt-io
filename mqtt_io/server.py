@@ -361,7 +361,7 @@ class MqttIo:  # pylint: disable=too-many-instance-attributes
             value = event.to_value != in_conf["inverted"]
             
             if is_counter:
-                incr = in_conf["increment_per_pulse"] if value else 0
+                incr = in_conf["increment_per_impulse"] if value else 0
                 val = in_conf["old_value"] + incr
                 in_conf["old_value"] = val
                 in_conf["num_pulses_since_transmission"]+=1
