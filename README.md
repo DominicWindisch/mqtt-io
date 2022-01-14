@@ -127,3 +127,11 @@ digital_inputs:
     min_pulses_between_transmission: 1
     file_path: /home/pi/counter_value.txt
 ```
+
+To install RPi.GPIO correctly, use:
+```
+export CFLAGS=-fcommon
+
+pip3 install RPi.GPIO
+
+```
