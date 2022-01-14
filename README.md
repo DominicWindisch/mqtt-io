@@ -135,3 +135,8 @@ export CFLAGS=-fcommon
 pip3 install RPi.GPIO
 
 ```
+
+and install
+```
+sudo apt install python3-dev
+```
