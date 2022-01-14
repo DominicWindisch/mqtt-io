@@ -140,3 +140,20 @@ and install
 ```
 sudo apt install python3-dev
 ```
+
+Place under `/etc/systemd/system/io2mqtt.service`:
+```
+[Unit]
+Description=mqtt-io
+Documentation=https://github.com/DominicWindisch/mqtt-io/
+After=network-online.target
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=2min
+ExecStart=/opt/mqtt-io/venv/bin/python3.9 -m mqtt_io /opt/mqtt-io/venv/config.yml
+
+[Install]
+WantedBy=multi-user.target
+```
