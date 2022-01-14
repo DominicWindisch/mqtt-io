@@ -114,3 +114,16 @@ stream_modules:
     device: /dev/ttyUSB0
     baud: 9600
 ```
+
+Config for counter mode: 
+```
+digital_inputs:
+  - name: impulse_gaszaehler_counter
+    module: rpi
+    pin: 4
+    is_counter: true
+    old_value: 18500
+    increment_per_impulse: 0.01
+    min_pulses_between_transmission: 1
+    file_path: /home/pi/counter_value.txt
+```
